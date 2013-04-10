@@ -16,33 +16,19 @@
 
 var wiringpi = require( './node-wiringpi' );
 
-wiringpi.pin_mode( 0, wiringpi.PIN_MODE.OUTPUT );
-wiringpi.pin_mode( 1, wiringpi.PIN_MODE.OUTPUT );
-wiringpi.pin_mode( 2, wiringpi.PIN_MODE.OUTPUT );
+if(wiringpi.wiringPiSetup() !== -1) {
 
-var HIGH = wiringpi.WRITE.HIGH;
-var LOW  = wiringpi.WRITE.LOW;
+	wiringpi.pinMode( 8, wiringpi.PIN_MODE.OUTPUT );
 
-var pattern = [
-  [ LOW , LOW , LOW  ],
-  [ LOW , LOW , HIGH ],
-  [ LOW , HIGH, HIGH ],
-  [ LOW , HIGH, LOW  ],
-  [ HIGH, HIGH, LOW  ],
-  [ HIGH, LOW , LOW  ],
-  [ HIGH, LOW , HIGH ],
-  [ HIGH, HIGH, HIGH ]
-];
+	var HIGH = wiringpi.WRITE.HIGH;
+	var LOW  = wiringpi.WRITE.LOW;
 
-var index = 0;
+	var current = HIGH;
 
-setInterval( function () {
-  var current = pattern[ index ];
+	setInterval( function () {
+    		current = current == HIGH ? LOW : HIGH;
+    		wiringpi.digitalWrite( 8, current);    
+	}, 125);
 
-  for( var i = 0, il = current.length; i < il; i++ ) {
-    wiringpi.digital_write( i, current[i] );    
-  }
-
-  index = ( index + 1 ) % pattern.length;
-}, 125 );
+}
 

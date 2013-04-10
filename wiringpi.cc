@@ -66,11 +66,44 @@ Handle<Value> Digital_Write( const Arguments& args ) {
     return scope.Close( Undefined() );
 }
 
-void init(Handle<Object> target) {
-    if( -1 == wiringPiSetup() ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument type" ) ) );
-        return;
+Handle<Value> Wiring_Pi_Setup( const Arguments& args ) {
+    HandleScope scope;
+    return scope.Close( Number::New( wiringPiSetup() ) );
+}
+
+Handle<Value> Delay_Microseconds( const Arguments& args ) {
+    HandleScope scope;
+
+    if( args.Length() != 1) {
+        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments !" ) ) );
     }
+
+    if( !args[0]->IsNumber() ) {
+        ThrowException( Exception::TypeError( String::New( "Bad argument type, must be an integer !" ) ) );
+        return scope.Close( Undefined() );
+    }
+
+    delayMicroseconds( args[0]->NumberValue() );
+
+    return scope.Close( Undefined() );
+}
+
+Handle<Value> Digital_Read( const Arguments& args ) {
+    HandleScope scope;
+
+    if( args.Length() != 1) {
+        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments !" ) ) );
+    }
+
+    if( !args[0]->IsNumber() ) {
+        ThrowException( Exception::TypeError( String::New( "Bad argument type, must be an integer !" ) ) );
+        return scope.Close( Undefined() );
+    }
+
+    return scope.Close( Number::New( digitalRead( args[0]->NumberValue() ) ) );
+}
+
+void init(Handle<Object> target) {
 
     // Setup a few constants
     Local<Object> PIN_MODE = Object::New();
@@ -84,11 +117,18 @@ void init(Handle<Object> target) {
     WRITE->Set( String::New( "LOW" ), Number::New( LOW ) );
     WRITE->Set( String::New( "HIGH" ), Number::New( HIGH ) );
 
-    target->Set(String::NewSymbol("num_pins"),
+    target->Set(String::NewSymbol("numPins"),
                 FunctionTemplate::New(Num_Pins)->GetFunction());
-    target->Set(String::NewSymbol("pin_mode"),
+    target->Set(String::NewSymbol("pinMode"),
                 FunctionTemplate::New(Pin_Mode)->GetFunction());
-    target->Set(String::NewSymbol("digital_write"),
+    target->Set(String::NewSymbol("digitalWrite"),
                 FunctionTemplate::New(Digital_Write)->GetFunction());
+    target->Set(String::NewSymbol("wiringPiSetup"),
+                FunctionTemplate::New(Wiring_Pi_Setup)->GetFunction());
+    target->Set(String::NewSymbol("delayMicroseconds"),
+                FunctionTemplate::New(Delay_Microseconds)->GetFunction());
+    target->Set(String::NewSymbol("digitalRead"),
+                FunctionTemplate::New(Digital_Read)->GetFunction());
 }
+
 NODE_MODULE(wiringpi, init)
