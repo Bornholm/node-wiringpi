@@ -45,13 +45,13 @@ GPIO pins you have:
 Before you write to GPIO lines, you should set them in output mode. This
 snippit sets pins 0 and 1 into output mode:
 
-<pre>    wpi.pin_mode( 0, wpi.PIN_MODE.OUTPUT );
+<pre>    wpi.pinMode( 0, wpi.PIN_MODE.OUTPUT );
     wpi.pinMode( 1, wpi.PIN_MODE.OUTPUT );</pre>
 
 Once in output mode, you can write HIGH or LOW values to the pin. This
 sequence turns pins 0 and 1 on and off:
 
-<pre>    wpi.digital_write( 0, wpi.WRITE.LOW );
+<pre>    wpi.digitalWrite( 0, wpi.WRITE.LOW );
     wpi.digitalWrite( 1, wpi.WRITE.LOW );
     wpi.digitalWrite( 0, wpi.WRITE.HIGH );
     wpi.digitalWrite( 1, wpi.WRITE.HIGH );</pre>
