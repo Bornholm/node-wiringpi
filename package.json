@@ -9,10 +9,10 @@
   },
   "main": "node-wiringpi.js",
   "engines": {
-    "node": "0.8"
+    "node": "5.4"
   },
   "dependencies": {},
   "devDependencies": {
-    "node-gyp": "0.8.x"
+    "node-gyp": "5.4.x"
   }
 }

@@ -13,122 +13,131 @@
 
 using namespace v8;
 
-Handle<Value> Num_Pins( const Arguments& args ) {
-    HandleScope scope;
-    return scope.Close( Number::New( NUM_PINS ) );
+void Num_Pins( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
+    info.GetReturnValue().Set( Number::New( isolate, NUM_PINS ) );
 }
 
-Handle<Value> Pin_Mode( const Arguments& args ) {
-    HandleScope scope;
+void Pin_Mode( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
 
-    if( args.Length() != 2 ) {
-        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments" ) ) );
-        return scope.Close( Undefined() );
+    if( info.Length() != 2 ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Wrong number of arguments" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    if( !args[0]->IsNumber() || !args[1]->IsNumber() ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument type" ) ) );
-        return scope.Close( Undefined() );
+    if( !info[0]->IsNumber() || !info[1]->IsNumber() ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument type" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    if( ( args[0]->NumberValue() < 0 ) ||
-        ( args[0]->NumberValue() >= NUM_PINS ) ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument" ) ) );
-        return scope.Close( Undefined() );
+    if( ( info[0]->NumberValue() < 0 ) ||
+        ( info[0]->NumberValue() >= NUM_PINS ) ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    pinMode( args[0]->NumberValue(), args[1]->NumberValue() );
+    pinMode( info[0]->NumberValue(), info[1]->NumberValue() );
 
-    return scope.Close( Undefined() );
+    info.GetReturnValue().Set( Undefined( isolate ) );
 }
 
-Handle<Value> Digital_Write( const Arguments& args ) {
-    HandleScope scope;
+void Digital_Write( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
 
-    if( args.Length() != 2 ) {
-        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments" ) ) );
-        return scope.Close( Undefined() );
+    if( info.Length() != 2 ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Wrong number of arguments" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    if( !args[0]->IsNumber() || !args[1]->IsNumber() ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument type" ) ) );
-        return scope.Close( Undefined() );
+    if( !info[0]->IsNumber() || !info[1]->IsNumber() ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument type" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    if( ( args[0]->NumberValue() < 0 ) ||
-        ( args[0]->NumberValue() >= NUM_PINS ) ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument" ) ) );
-        return scope.Close( Undefined() );
+    if( ( info[0]->NumberValue() < 0 ) ||
+        ( info[0]->NumberValue() >= NUM_PINS ) ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    digitalWrite( args[0]->NumberValue(), args[1]->NumberValue() );
+    digitalWrite( info[0]->NumberValue(), info[1]->NumberValue() );
 
-    return scope.Close( Undefined() );
+    info.GetReturnValue().Set( Undefined( isolate ) );
 }
 
-Handle<Value> Wiring_Pi_Setup( const Arguments& args ) {
-    HandleScope scope;
-    return scope.Close( Number::New( wiringPiSetup() ) );
+void Wiring_Pi_Setup( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
+
+    info.GetReturnValue().Set( Number::New( isolate, wiringPiSetup() ) );
 }
 
-Handle<Value> Delay_Microseconds( const Arguments& args ) {
-    HandleScope scope;
+void Delay_Microseconds( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
 
-    if( args.Length() != 1) {
-        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments !" ) ) );
+    if( info.Length() != 1) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Wrong number of arguments !" ) ) );
     }
 
-    if( !args[0]->IsNumber() ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument type, must be an integer !" ) ) );
-        return scope.Close( Undefined() );
+    if( !info[0]->IsNumber() ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument type, must be an integer !" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    delayMicroseconds( args[0]->NumberValue() );
+    delayMicroseconds( info[0]->NumberValue() );
 
-    return scope.Close( Undefined() );
+    info.GetReturnValue().Set( Undefined( isolate ) );
 }
 
-Handle<Value> Digital_Read( const Arguments& args ) {
-    HandleScope scope;
+void Digital_Read( const v8::FunctionCallbackInfo<v8::Value>& info ) {
+    Isolate* isolate = info.GetIsolate();
+    HandleScope scope(isolate);
 
-    if( args.Length() != 1) {
-        ThrowException( Exception::TypeError( String::New( "Wrong number of arguments !" ) ) );
+    if( info.Length() != 1) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Wrong number of arguments !" ) ) );
     }
 
-    if( !args[0]->IsNumber() ) {
-        ThrowException( Exception::TypeError( String::New( "Bad argument type, must be an integer !" ) ) );
-        return scope.Close( Undefined() );
+    if( !info[0]->IsNumber() ) {
+        isolate->ThrowException( Exception::TypeError( String::NewFromUtf8( isolate, "Bad argument type, must be an integer !" ) ) );
+        info.GetReturnValue().Set( Undefined( isolate ) );
     }
 
-    return scope.Close( Number::New( digitalRead( args[0]->NumberValue() ) ) );
+    info.GetReturnValue().Set( Number::New( isolate, digitalRead( info[0]->NumberValue() ) ) );
 }
 
-void init(Handle<Object> target) {
+void init( Handle<Object> target ) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
 
     // Setup a few constants
-    Local<Object> PIN_MODE = Object::New();
-    target->Set( String::New( "PIN_MODE" ), PIN_MODE );
-    PIN_MODE->Set( String::New( "INPUT" ), Number::New( INPUT ) );
-    PIN_MODE->Set( String::New( "OUTPUT" ), Number::New( OUTPUT ) );
-    PIN_MODE->Set( String::New( "PWM_OUTPUT" ), Number::New( PWM_OUTPUT ) );
+    Local<Object> PIN_MODE = Object::New( isolate );
+    target->Set(String::NewFromUtf8( isolate, "PIN_MODE" ), PIN_MODE );
+    PIN_MODE->Set( String::NewFromUtf8( isolate, "INPUT" ), Number::New( isolate, INPUT ) );
+    PIN_MODE->Set( String::NewFromUtf8( isolate, "OUTPUT" ), Number::New( isolate, OUTPUT ) );
+    PIN_MODE->Set( String::NewFromUtf8( isolate, "PWM_OUTPUT" ), Number::New( isolate, PWM_OUTPUT ) );
 
-    Local<Object> WRITE = Object::New();
-    target->Set( String::New( "WRITE" ), WRITE );
-    WRITE->Set( String::New( "LOW" ), Number::New( LOW ) );
-    WRITE->Set( String::New( "HIGH" ), Number::New( HIGH ) );
+    Local<Object> WRITE = Object::New( isolate );
+    target->Set( String::NewFromUtf8( isolate, "WRITE" ), WRITE );
+    WRITE->Set( String::NewFromUtf8( isolate, "LOW" ), Number::New( isolate, LOW ) );
+    WRITE->Set( String::NewFromUtf8( isolate, "HIGH" ), Number::New( isolate, HIGH ) );
 
-    target->Set(String::NewSymbol("numPins"),
-                FunctionTemplate::New(Num_Pins)->GetFunction());
-    target->Set(String::NewSymbol("pinMode"),
-                FunctionTemplate::New(Pin_Mode)->GetFunction());
-    target->Set(String::NewSymbol("digitalWrite"),
-                FunctionTemplate::New(Digital_Write)->GetFunction());
-    target->Set(String::NewSymbol("wiringPiSetup"),
-                FunctionTemplate::New(Wiring_Pi_Setup)->GetFunction());
-    target->Set(String::NewSymbol("delayMicroseconds"),
-                FunctionTemplate::New(Delay_Microseconds)->GetFunction());
-    target->Set(String::NewSymbol("digitalRead"),
-                FunctionTemplate::New(Digital_Read)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "numPins", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Num_Pins)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "pinMode", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Pin_Mode)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "digitalWrite", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Digital_Write)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "wiringPiSetup", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Wiring_Pi_Setup)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "delayMicroseconds", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Delay_Microseconds)->GetFunction());
+    target->Set(String::NewFromUtf8(isolate, "digitalRead", v8::String::kInternalizedString),
+                FunctionTemplate::New(isolate, Digital_Read)->GetFunction());
 }
 
 NODE_MODULE(wiringpi, init)
